@@ -2,14 +2,14 @@ package main
 
 import "fmt"
 
-// Contact struct to store contact details
+
 type Contact struct {
     Name  string
     Email string
     Phone string
 }
 
-// addContact adds a new contact to the slice
+
 func addContact(contacts []Contact, name, email, phone string) []Contact {
     if name == "" {
         fmt.Println("Error: Name cannot be empty")
@@ -23,7 +23,7 @@ func addContact(contacts []Contact, name, email, phone string) []Contact {
     return append(contacts, newContact)
 }
 
-// listContacts prints all contacts
+
 func listContacts(contacts []Contact) {
     if len(contacts) == 0 {
         fmt.Println("No contacts found.")
@@ -34,27 +34,27 @@ func listContacts(contacts []Contact) {
     }
 }
 
-// findContact searches for a contact by name
+// searches for a contact by name
 func findContact(contacts []Contact, name string) *Contact {
     for _, contact := range contacts {
         if contact.Email == "" {
-            continue // Skip contacts with empty email
+            continue 
         }
         if contact.Name == name {
-            return &contact // Return pointer to contact
+            return &contact 
         }
     }
-    return nil // Not found
+    return nil 
 }
 
-// deleteContact removes a contact by name
+// removes a contact by name
 func deleteContact(contacts []Contact, name string) []Contact {
     for i, contact := range contacts {
         if contact.Name == name {
             return append(contacts[:i], contacts[i+1:]...)
         }
     }
-    return contacts // Return unchanged if not found
+    return contacts 
 }
 
 func main() {
