@@ -9,8 +9,12 @@ type Contact struct {
     Phone string
 }
 
-// addContact adds a new contact to the slice and returns the updated slice
+// addContact adds a new contact to the slice
 func addContact(contacts []Contact, name, email, phone string) []Contact {
+    if name == "" {
+        fmt.Println("Error: Name cannot be empty")
+        return contacts
+    }
     newContact := Contact{
         Name:  name,
         Email: email,
@@ -19,7 +23,7 @@ func addContact(contacts []Contact, name, email, phone string) []Contact {
     return append(contacts, newContact)
 }
 
-// listContacts prints all contacts in the slice
+// listContacts prints all contacts
 func listContacts(contacts []Contact) {
     if len(contacts) == 0 {
         fmt.Println("No contacts found.")
@@ -55,26 +59,67 @@ func deleteContact(contacts []Contact, name string) []Contact {
 
 func main() {
     var contacts []Contact
-    // Add contacts
-    contacts = addContact(contacts, "Alice", "alice@example.com", "123-456-7890")
-    contacts = addContact(contacts, "Bob", "", "987-654-3210")
-    contacts = addContact(contacts, "Charlie", "charlie@example.com", "555-555-5555")
+    for {
+        fmt.Println("\nContact Manager:")
+        fmt.Println("1. Add Contact")
+        fmt.Println("2. List Contacts")
+        fmt.Println("3. Find Contact")
+        fmt.Println("4. Delete Contact")
+        fmt.Println("5. Exit")
+        fmt.Print("Choose an option (1-5): ")
 
-    // List all contacts
-    fmt.Println("All Contacts:")
-    listContacts(contacts)
+        var choice int
+        _, err := fmt.Scan(&choice)
+        if err != nil || choice < 1 || choice > 5 {
+            fmt.Println("Invalid choice. Please enter a number between 1 and 5.")
+            continue
+        }
 
-    // Find a contact
-    fmt.Println("\nFinding Alice:")
-    found := findContact(contacts, "Alice")
-    if found != nil {
-        fmt.Printf("Found: %s, %s, %s\n", found.Name, found.Email, found.Phone)
-    } else {
-        fmt.Println("Contact not found")
+        switch choice {
+        case 1:
+            var name, email, phone string
+            fmt.Print("Enter name (single word): ")
+            fmt.Scan(&name)
+            fmt.Print("Enter email: ")
+            fmt.Scan(&email)
+            fmt.Print("Enter phone: ")
+            fmt.Scan(&phone)
+            contacts = addContact(contacts, name, email, phone)
+            fmt.Println("Contact added successfully!")
+
+        case 2:
+            fmt.Println("\nAll Contacts:")
+            listContacts(contacts)
+
+        case 3:
+            var name string
+            fmt.Print("Enter name to find: ")
+            fmt.Scan(&name)
+            found := findContact(contacts, name)
+            if found != nil {
+                fmt.Printf("Found: %s, %s, %s\n", found.Name, found.Email, found.Phone)
+            } else {
+                fmt.Println("Contact not found")
+            }
+
+        case 4:
+            var name string
+            fmt.Print("Enter name to delete: ")
+            fmt.Scan(&name)
+            beforeLen := len(contacts)
+            contacts = deleteContact(contacts, name)
+            if len(contacts) < beforeLen {
+                fmt.Println("Contact deleted successfully!")
+            } else {
+                fmt.Println("Contact not found")
+            }
+
+        case 5:
+            fmt.Println("Goodbye!")
+            return
+
+        default:
+            fmt.Println("Invalid choice. Please enter a number between 1 and 5.")
+        }
     }
-
-    // Delete a contact
-    fmt.Println("\nDeleting Bob:")
-    contacts = deleteContact(contacts, "Bob")
-    listContacts(contacts)
 }
