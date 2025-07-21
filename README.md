@@ -26,5 +26,4 @@ A command-line tool to manage contacts, built with Go. Ideal for small business 
 - Add file storage to save contacts persistently.
 - Extend to a REST API for web-based access
 
-## Author
-Omkar Sarkar_
+
